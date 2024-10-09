@@ -36,8 +36,11 @@ module Mjml
 
   def self.check_version(bin)
     stdout, _, status = run_mjml('--version', mjml_bin: bin)
+    puts "self.check_version: \nstdout: #{stdout}"
+    puts stdout.include?("mjml-core: #{Mjml.mjml_binary_version_supported}")
     status.success? && stdout.include?("mjml-core: #{Mjml.mjml_binary_version_supported}")
-  rescue StandardError
+  rescue StandardError => e
+    puts e.inspect
     false
   end
 
@@ -66,6 +69,8 @@ module Mjml
     end
 
     return if mjml_binary.blank?
+
+    puts mjml_binary
 
     return mjml_binary if check_version(mjml_binary)
 
